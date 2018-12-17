@@ -21,7 +21,6 @@ int main ()
 {
 	/* идентификатор множества семафоров, предварительно полученный при помощи системного вызова semget, права доступа Read, Write (чтение и запись)*/
 	int semid = semget (SEMAFORES_KEY, 1, IPC_CREAT | 0666);
-	//PRINT ("semId = %d\n", semId)
 	if (semid == -1)
 	{
 		perror ("error with semget\n");
@@ -29,15 +28,13 @@ int main ()
 	}
 /* Пытаемся эксклюзивно создать разделяемую память для выбранного ключа, права доступа 0666 - чтение и запись разрешены для всех */
 	int shmid = shmget (SHARED_MEMORY_KEY, 20, IPC_CREAT | 0666);
-	//PRINT ("shmId = %d\n", shmId)
 	if (shmid == -1)
 	{
 		perror ("error with shmget\n");
 		return -1;
 	}
 
-	void* shMemPtr = shmat (shmId, NULL, 0);
-	//PRINT ("shMemPtr = %p\n", shMemPtr)
+	void* shMemPtr = shmat (shmid, NULL, 0);
 	if (shMemPtr == (void*)-1)
 	{
 		perror ("error with shmat\n");
